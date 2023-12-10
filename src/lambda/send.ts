@@ -1,6 +1,4 @@
-import { ChatEventEmitter } from '@/lib/ChatEventEmitter';
 import type { Request, Response } from 'express';
-import { createServerSentEventStream } from 'squid-ssr/hooks/server';
 
 const methods = {
   GET: (req: Request, res: Response) => _get(req, res),
@@ -21,16 +19,13 @@ export default async function handler(req: Request, res: Response) {
 }
 
 async function _get(req: Request, res: Response) {
-  const sse = createServerSentEventStream(req, res);
-
-  ChatEventEmitter.on('message', (data) => {
-    sse.send('message', data);
-  });
-  // res.status(400).send('Method does not exist for this route');
+  res.status(400).send('Method does not exist for this route');
 }
 
 async function _post(req: Request, res: Response) {
-  res.status(400).send('Method does not exist for this route');
+  req.body = JSON.parse(req.body.toString('utf8'));
+  const { message, sender } = req.body;
+  res.status(200).send(req.body);
 }
 
 async function _put(req: Request, res: Response) {
