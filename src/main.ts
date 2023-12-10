@@ -1,3 +1,4 @@
+import bodyParser from 'body-parser';
 import express from 'express';
 import { squid } from 'squid-ssr';
 import pages from 'squid-ssr/pages';
@@ -8,6 +9,7 @@ const app = express();
 // http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
 app.disable('x-powered-by');
 
+app.use(bodyParser.json({ type: 'application/json' }));
 app.use(squid(pages));
 
 app.get('*', (_req, res) => {

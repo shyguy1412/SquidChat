@@ -1,3 +1,4 @@
+import { ChatEventEmitter } from '@/lib/ChatEventEmitter';
 import type { Request, Response } from 'express';
 
 const methods = {
@@ -19,34 +20,37 @@ export default async function handler(req: Request, res: Response) {
 }
 
 async function _get(req: Request, res: Response) {
-  res.status(200).json({
-    hello: req.params.thing
-  });
+  res.status(400).send('Method does not exist for this route');
 }
 
 async function _post(req: Request, res: Response) {
-  res.status(500).send('Method does not exist for this route');
+  const { message, sender } = req.body;
+  ChatEventEmitter.emit('message', {
+    message,
+    sender
+  });
+  res.status(204).send('');
 }
 
 async function _put(req: Request, res: Response) {
-  res.status(500).send('Method does not exist for this route');
+  res.status(400).send('Method does not exist for this route');
 }
 
 async function _delete(req: Request, res: Response) {
-  res.status(500).send('Method does not exist for this route');
+  res.status(400).send('Method does not exist for this route');
 }
 
 async function _head(req: Request, res: Response<any>) {
-  res.status(500).send('Method does not exist for this route');
+  res.status(400).send('Method does not exist for this route');
 }
 async function _update(req: Request, res: Response<any>) {
-  res.status(500).send('Method does not exist for this route');
+  res.status(400).send('Method does not exist for this route');
 }
 
 async function _trace(req: Request, res: Response<any>) {
-  res.status(500).send('Method does not exist for this route');
+  res.status(400).send('Method does not exist for this route');
 }
 
 async function _options(req: Request, res: Response) {
-  res.status(500).send('Method does not exist for this route');
+  res.status(400).send('Method does not exist for this route');
 }
