@@ -1,5 +1,5 @@
 {
-  "name": "squid-template",
+  "name": "squid-chat",
   "version": "1.0.0",
   "description": "",
   "main": "build/squid-server.js",
