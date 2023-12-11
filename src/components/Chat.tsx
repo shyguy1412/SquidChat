@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import { useServerSentEvents } from "squid-ssr/hooks/client";
+import { send, receiveUrl } from "squid-ssr/lambda";
 
 type Props = {
   name: string;
@@ -10,7 +11,7 @@ export function Chat({ name }: Props) {
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<{ message: string, sender: string; }[]>([]);
 
-  const sse = useServerSentEvents('/api/v0/recieve');
+  const sse = useServerSentEvents(receiveUrl);
 
   useEffect(() => {
     if (!sse) return;
@@ -19,6 +20,7 @@ export function Chat({ name }: Props) {
         return [...chatHistory, message];
       });
     });
+
   }, [sse]);
 
   return <div>
@@ -28,7 +30,7 @@ export function Chat({ name }: Props) {
     </div>
     <span>
       <input type="text" value={message} onChange={({ currentTarget: { value } }) => setMessage(value)} />
-      <button onClick={() => fetch('/api/v0/send', {
+      <button onClick={() => send({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -41,4 +43,4 @@ export function Chat({ name }: Props) {
       >Send</button>
     </span>
   </div>;
-}
+};

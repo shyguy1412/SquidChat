@@ -1,6 +1,6 @@
-import type { Request, Response, Express } from 'express';
-import bodyparser from 'body-parser';
+import { ChatEventEmitter } from '@/lib/ChatEventEmitter';
 import { sendMessageToDatabase } from '@/lib/mongodb';
+import type { Request, Response } from 'express';
 
 const methods = {
   GET: (req: Request, res: Response) => _get(req, res),
@@ -13,14 +13,8 @@ const methods = {
   TRACE: (req: Request, res: Response) => _trace(req, res),
 };
 
-export async function setup(app: Express) {
-  app.use(bodyparser.json({ 'type': 'application/json' }));
-}
 
-export async function handler(req: Request, res: Response) {
-  //Allow CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-
+export default async function handler(req: Request, res: Response) {
   const method = req.method ?? 'GET';
   if (Object.hasOwn(methods, method))
     await methods[method as keyof typeof methods](req, res);
@@ -56,8 +50,5 @@ async function _trace(req: Request, res: Response<any>) {
 }
 
 async function _options(req: Request, res: Response) {
-  //CORS preflight response
-  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.status(204).send();
+  res.status(400).send('Method does not exist for this route');
 }

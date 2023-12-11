@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import { squid } from 'squid-ssr';
 import pages from 'squid-ssr/pages';
+import "@/lib/mongodb";
 
 const port = Number.parseInt(process.env.SQUID_PORT ?? '0') || 3000;
 const app = express();

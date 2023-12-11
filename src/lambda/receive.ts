@@ -1,6 +1,7 @@
 import type { Request, Response, Express } from 'express';
 import bodyparser from 'body-parser';
-import { sendMessageToDatabase } from '@/lib/mongodb';
+import { recieveMessageFromDatabase } from '@/lib/mongodb';
+import { createServerSentEventStream } from 'squid-ssr/hooks/server';
 
 const methods = {
   GET: (req: Request, res: Response) => _get(req, res),
@@ -27,13 +28,14 @@ export async function handler(req: Request, res: Response) {
 }
 
 async function _get(req: Request, res: Response) {
-  res.status(400).send('Method does not exist for this route');
+  const sse = createServerSentEventStream(req, res);
+  recieveMessageFromDatabase(message => {
+    sse.send('message', message);
+  });
 }
 
 async function _post(req: Request, res: Response) {
-  const { message, sender } = req.body;
-  await sendMessageToDatabase({ message, sender });
-  res.status(204).send('');
+  res.status(400).send('Method does not exist for this route');
 }
 
 async function _put(req: Request, res: Response) {

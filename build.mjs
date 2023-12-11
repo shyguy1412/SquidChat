@@ -1,14 +1,16 @@
 import { context } from 'squid-ssr';
 import nodemon from 'nodemon';
+import { EnvPlugin } from 'esbuild-env-plugin';
 
 const WATCH = process.argv.includes('--watch');
 
 const createContext = async () => await context({
-  plugins: [],
+  plugins: [EnvPlugin()],
   loader: {
     '.jpg': 'file'
   },
-  minify: false
+  minify: false,
+  lambdaGateway: 'http://localhost:8080'
 });
 
 let ctx = await createContext();
