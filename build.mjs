@@ -10,6 +10,7 @@ const createContext = async () => await context({
     '.jpg': 'file'
   },
   minify: false,
+  // lambdaGateway: 'localhost:8080'
   lambdaGateway: 'https://faas.nasram.net'
 });
 

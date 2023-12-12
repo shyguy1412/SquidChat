@@ -1,7 +1,8 @@
 import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import { useServerSentEvents } from "squid-ssr/hooks/client";
-import { send, receiveUrl } from "squid-ssr/lambda";
+import { send } from "squid-ssr/lambda";
+import { apiV0MongoReceiveUrl } from "squid-ssr/api";
 
 type Props = {
   name: string;
@@ -11,7 +12,7 @@ export function Chat({ name }: Props) {
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<{ message: string, sender: string; }[]>([]);
 
-  const sse = useServerSentEvents(receiveUrl);
+  const sse = useServerSentEvents(apiV0MongoReceiveUrl);
 
   useEffect(() => {
     if (!sse) return;
