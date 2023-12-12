@@ -23,6 +23,7 @@ export default async function handler(req: Request, res: Response) {
 async function _get(req: Request, res: Response) {
   const sse = createServerSentEventStream(req, res);
   recieveMessageFromDatabase(message => {
+    console.log(message);
     sse.send('message', message);
   });
 }
