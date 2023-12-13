@@ -77,11 +77,18 @@ cd faasd
 
 ### Login to the gateway
 
-`localhost` kann zu problemen führen, also lieber 127.0.0.1
+`localhost` can lead to problems, so use 127.0.0.1
 
 ```sh
 sudo cat /var/lib/faasd/secrets/basic-auth-password \
 | faas-cli login --username admin --password-stdin --gateway http://127.0.0.1:8080
+sudo cat /var/lib/faasd/secrets/basic-auth-password
+```
+
+locally
+
+```sh
+echo pass | faas-cli login --username admin --password-stdin --gateway https://faas.nasram.net
 ```
 
 ## Deploy test function
@@ -93,8 +100,11 @@ sudo cat /var/lib/faasd/secrets/basic-auth-password \
 
 ### On your machine
 
-`npx squid lambda build -p nasram1337`
-`npx squid lambda push`
+```sh
+npx squid lambda build -p nasram1337 -g https://faas.nasram.net
+npx squid lambda push
+npx squid lambda deploy
+```
 
 ### On the openfaas server
 
@@ -102,12 +112,6 @@ sudo cat /var/lib/faasd/secrets/basic-auth-password \
 git clone https://github.com/NilsRamstoeck/SquidChat.git
 cd ./SquidChat
 npm i
-npx squid lambda build -p nasram1337 -D
-npx squid lambda deploy
+npm run build
+npm start
 ```
-
-### Start squid server
-
-create .env file
-
-`npm run build && npx squid start`
