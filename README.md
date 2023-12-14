@@ -93,8 +93,10 @@ echo pass | faas-cli login --username admin --password-stdin --gateway https://f
 
 ## Deploy test function
 
-`faas-cli store deploy figlet`
-`echo Hallo Welt | faas-cli invoke figlet`
+```sh
+faas-cli store deploy figlet
+echo Hallo Welt | faas-cli invoke figlet
+```
 
 ## Deploy using squid
 
